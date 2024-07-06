@@ -17,4 +17,12 @@ public interface IUserRepo extends JpaRepository<User, Long> {
     @Query(value = "SELECT u.* FROM User u LEFT JOIN Role r ON u.role_id = r.id WHERE r.name NOT IN :roleNames", nativeQuery = true)
     List<User> findAllExceptRoles(@Param("roleNames") List<String> roleNames);
 
+    @Query("SELECT MAX(u.id) FROM User u")
+    Long findMaxId();
+
+    @Query(value = "SELECT AUTO_INCREMENT " +
+            "FROM information_schema.TABLES " +
+            "WHERE TABLE_SCHEMA = 'fashion-demo' " +
+            "AND TABLE_NAME = 'User'", nativeQuery = true)
+    Long getAutoIncrementValue();
 }

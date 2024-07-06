@@ -9,14 +9,13 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Size {
+public class Sizes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
     @Column
     private String name;
-    @ManyToOne
-    @JoinColumn
-    private Product product;
+    @Column
+    private String sizeType;
 }

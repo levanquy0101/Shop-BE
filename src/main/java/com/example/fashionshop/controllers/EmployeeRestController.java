@@ -1,5 +1,6 @@
 package com.example.fashionshop.controllers;
 
+import com.example.fashionshop.entities.Customer;
 import com.example.fashionshop.entities.User;
 import com.example.fashionshop.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,13 @@ public class EmployeeRestController {
 
         return new ResponseEntity<>(user,HttpStatus.OK);
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity<?> updateCustomer(@PathVariable Long id, @RequestBody User user ) {
+        iUserService.update(id, user);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
     @DeleteMapping("{id}")
     public ResponseEntity<?> deleteEmployee(@PathVariable Long id){
         iUserService.deleteEmployee(id);

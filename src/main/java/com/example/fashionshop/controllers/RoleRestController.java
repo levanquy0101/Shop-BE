@@ -22,6 +22,7 @@ public class RoleRestController {
 //        List<Role> roles = iRoleService.findAll();
 //        return new ResponseEntity<>(roles, HttpStatus.OK);
 //    }
+
     @GetMapping("/not")
     public ResponseEntity<List<Role>> getAllRoleNotIn() {
         List<String> names = Arrays.asList("ROLE_ADMIN", "ROLE_MANAGER");

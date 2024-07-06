@@ -27,16 +27,22 @@ public class CustomerRestController {
         return new ResponseEntity<>(createdCustomer, HttpStatus.CREATED);
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Customer> updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
-        Customer updatedCustomer = iCustomerService.update(id, customer);
-        return new ResponseEntity<>(updatedCustomer, HttpStatus.OK);
+    @PutMapping("{id}")
+    public ResponseEntity<?> updateCustomer(@PathVariable Long id, @RequestBody Customer customer) {
+        iCustomerService.update(id, customer);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("{id}")
     public ResponseEntity<?> deleteCustomer(@PathVariable Long id) {
         iCustomerService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/code-auto")
+    public ResponseEntity<?> getCodeAuto() {
+        String codeAuto = iCustomerService.generateEmployeeCode();
+        return new ResponseEntity<>(codeAuto,HttpStatus.OK);
     }
 }
 

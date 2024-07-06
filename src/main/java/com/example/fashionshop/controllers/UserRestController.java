@@ -2,7 +2,9 @@ package com.example.fashionshop.controllers;
 import com.example.fashionshop.dto.ChangePasswordDTO;
 import com.example.fashionshop.dto.UserDTO;
 import com.example.fashionshop.entities.Customer;
+import com.example.fashionshop.entities.Role;
 import com.example.fashionshop.entities.User;
+import com.example.fashionshop.services.IRoleService;
 import com.example.fashionshop.services.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,11 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth/user")
 @CrossOrigin(origins = "*")
@@ -20,6 +27,8 @@ public class UserRestController {
 
     @Autowired
     private IUserService iUserService;
+    @Autowired
+    private IRoleService iRoleService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -35,6 +44,17 @@ public class UserRestController {
         }else {
             return null;
         }
+    }
+
+    @GetMapping("/code-auto")
+    public ResponseEntity<?> getAllRoleNotInAndAutoCode() {
+        String codeAuto = iUserService.generateEmployeeCode();
+        List<String> names = Arrays.asList("ROLE_ADMIN", "ROLE_MANAGER");
+        List<Role> roles = iRoleService.findByNameNotIn(names);
+        Map<String, Object> response = new HashMap<>();
+        response.put("codeAuto", codeAuto);
+        response.put("roles", roles);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGER')")

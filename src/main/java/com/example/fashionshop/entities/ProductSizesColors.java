@@ -5,28 +5,31 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Product {
+public class ProductSizesColors {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
-    @Column(name = "code", nullable = false, unique = true)
-    private String code;
     @Column
-    private String name;
+    private String code;
     @JoinColumn
     @ManyToOne
-    private ProductCategory productCategory;
+    private Product product;
+    @OneToMany(mappedBy = "productSizesColors", cascade = CascadeType.ALL)
+    private List<ProductImage> productImages;
     @JoinColumn
-    private String imgCoverUrl;
+    @ManyToOne
+    private Sizes sizes;
+    @JoinColumn
+    @ManyToOne
+    private Colors colors;
     @Column
-    private Double price;
-    @Column
-    private Integer totalQuantity;
-    @Column
-    private Boolean status;
+    private Integer quantity = 0;
+
 }

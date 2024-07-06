@@ -22,4 +22,7 @@ public interface IUserService {
     List<User> findAllEmployeeExceptRoles(List<String> roleNames);
 
     void deleteEmployee(Long id);
+    String generateEmployeeCode();
+
+    void update(Long id, User user);
 }

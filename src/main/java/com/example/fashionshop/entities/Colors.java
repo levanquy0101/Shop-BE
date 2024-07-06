@@ -5,23 +5,20 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
+
+import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class ProductImage {
+public class Colors{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private Long id;
     @Column
-    private String name;
-    @JoinColumn
-    @ManyToOne
-    @JsonBackReference
-    private ProductSizesColors productSizesColors;
+    private String hexCode;
     @Column
-    private String urlName;
+    private String name;
 }

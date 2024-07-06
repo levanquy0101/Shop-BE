@@ -1,4 +1,4 @@
-package com.example.fashionshop.controllers;
+package com.example.fashionshop.controllers.auth;
 
 import com.example.fashionshop.services.impl.BackupRecoveryService;
 import org.springframework.beans.factory.annotation.Autowired;

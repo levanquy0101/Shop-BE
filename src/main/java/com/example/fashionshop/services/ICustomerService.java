@@ -10,7 +10,9 @@ public interface ICustomerService {
 
     Customer save(Customer customer);
 
-    Customer update(Long id, Customer customer);
+    void update(Long id, Customer customer);
 
     void delete(Long id);
+
+    String generateEmployeeCode();
 }

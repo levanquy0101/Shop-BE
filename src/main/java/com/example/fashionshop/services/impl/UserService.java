@@ -79,4 +79,33 @@ public class UserService implements IUserService {
     public void deleteEmployee(Long id) {
         iUserRepository.deleteById(id);
     }
+    @Override
+    public String generateEmployeeCode(){
+        Long codeAuto = Optional.ofNullable(iUserRepository.findMaxId()).orElse(0L);
+        return "NV-" + String.format("%03d", codeAuto + 1);
+    }
+
+    @Override
+    public void update(Long id, User user) {
+        Optional<User> optionalUser = iUserRepository.findById(id);
+        System.out.println("--------------- Thực hiện kiểm tra -----------");
+        System.out.println(optionalUser);
+        if (optionalUser.isPresent()) {
+            User existingUser = optionalUser.get();
+            existingUser.setName(user.getName());
+            existingUser.setDob(user.getDob());
+            existingUser.setAddress(user.getAddress());
+            existingUser.setUsername(user.getUsername());
+            existingUser.setGender(user.getGender());
+            existingUser.setPhone(user.getPhone());
+            existingUser.setEmail(user.getEmail());
+            existingUser.setRole(user.getRole());
+            String newPassword = user.getPassword();
+            if (newPassword != null && !newPassword.isEmpty()) {
+                existingUser.setPassword(passwordEncoder.encode(newPassword));
+            }
+            iUserRepository.saveAndFlush(existingUser);
+        }
+    }
+
 }
