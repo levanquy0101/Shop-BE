@@ -12,7 +12,7 @@ public interface IUserRepo extends JpaRepository<User, Long> {
     boolean existsByUsername(String admin);
 //    Optional<User> findById(Long id);
 
-    @Query(value = "SELECT u.* FROM User u LEFT JOIN Role r ON u.role_id = r.id WHERE r.name NOT IN :roleNames", nativeQuery = true)
+    @Query(value = "SELECT u.* FROM User u LEFT JOIN Role r ON u.role_id = r.id WHERE r.name NOT IN :roleNames ORDER BY u.id", nativeQuery = true)
     List<User> findAllExceptRoles(@Param("roleNames") List<String> roleNames);
 
     @Query("SELECT MAX(u.id) FROM User u")

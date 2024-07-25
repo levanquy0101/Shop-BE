@@ -1,10 +1,12 @@
 package com.example.shop.controllers;
 import com.example.shop.dto.ChangePasswordDTO;
 import com.example.shop.dto.UserDTO;
+import com.example.shop.dto.UserInforUserDetails;
 import com.example.shop.entities.Role;
 import com.example.shop.entities.User;
 import com.example.shop.services.IRoleService;
 import com.example.shop.services.IUserService;
+import com.nimbusds.openid.connect.sdk.claims.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +33,14 @@ public class UserRestController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @GetMapping("/user-info")
+    public ResponseEntity<?> getUserInfo() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String usernameAuthentication = authentication.getName();
+        String rolesAuthentication = authentication.getAuthorities().toString();
+        return ResponseEntity.ok(new UserDTO(usernameAuthentication, rolesAuthentication));
+    }
+
     @GetMapping("{username}")
     @ResponseBody
     public UserDTO getUserById(@PathVariable String username) {
@@ -43,7 +53,6 @@ public class UserRestController {
             return null;
         }
     }
-
     @GetMapping("/code-auto")
     public ResponseEntity<?> getAllRoleNotInAndAutoCode() {
         String codeAuto = iUserService.generateEmployeeCode();

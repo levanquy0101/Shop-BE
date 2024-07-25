@@ -17,6 +17,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -51,12 +57,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers("/auth/**","/api/public/**").permitAll()
-//                        .requestMatchers("/auth/**", "/logout").authenticated().anyRequest().authenticated()
-//                        .requestMatchers("/admin/**").hasRole("ADMIN")
-//                        .requestMatchers("/api/**").hasAnyAuthority("MANAGER", "ADMIN")
+                        .requestMatchers("/auth/**", "/api/public/**").permitAll()
                         .requestMatchers("/api/auth/**").authenticated()
                         .anyRequest().authenticated()
                 )
@@ -66,16 +70,30 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .failureUrl("/login?error=true")
                         .loginProcessingUrl("/login")
-                        .defaultSuccessUrl("/"))
+                        .defaultSuccessUrl("/")
+                )
                 .logout(logout -> logout
                         .deleteCookies("remove")
-                        .invalidateHttpSession(false)
+                        .invalidateHttpSession(true)
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/logoutSuccessful"));
+                        .logoutSuccessUrl("/logoutSuccessful")
+                );
 
         http.addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
-}
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3030")); // Địa chỉ frontend của bạn
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+}
