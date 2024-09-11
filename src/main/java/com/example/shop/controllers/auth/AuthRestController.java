@@ -62,7 +62,7 @@ public class AuthRestController {
             String usernameAuthentication = authentication.getName();
             String rolesAuthentication = authentication.getAuthorities().toString();
             LoginResponse loginResponse = new LoginResponse("Login successful",usernameAuthentication,rolesAuthentication);
-            return new ResponseEntity<>(loginResponse,HttpStatus.OK);
+            return new ResponseEntity<>(jwtToken,HttpStatus.OK);
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginResponse("Invalid username or password", null,null));
