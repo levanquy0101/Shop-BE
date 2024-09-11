@@ -1,0 +1,8 @@
+build/
+.gradle/
+*.jar
+*.war
+*.zip
+.git
+.gitignore
+README.md
