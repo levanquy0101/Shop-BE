@@ -87,7 +87,11 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3030")); // Địa chỉ frontend của bạn
+//        configuration.setAllowedOrigins(Collections.singletonList("http://localhost:3030")); // Địa chỉ frontend của bạn
+        configuration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:3030",
+                "https://shoe.levanquy.com/"
+        ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("*"));
         configuration.setAllowCredentials(true);
